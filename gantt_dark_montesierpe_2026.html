@@ -1,0 +1,347 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1.2rem 0;font-family:var(--font-sans);background:#0D0D0D;min-height:100vh;color:#E8E4D8}
+.header{padding:0 4px 1.2rem 4px;border-bottom:0.5px solid #2A2A2A;margin-bottom:1.2rem}
+.header-top{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header-title{display:flex;flex-direction:column;gap:3px}
+.header-label{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#9A7C50}
+.header-main{font-size:20px;font-weight:600;color:#F0ECE0;letter-spacing:0.01em;line-height:1.2}
+.header-main em{font-style:italic;color:#BBAA88;font-weight:400}
+.header-sub{font-size:12px;color:#666;margin-top:2px;letter-spacing:0.03em}
+.header-brand{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.header-by{font-size:10px;color:#555;letter-spacing:0.08em;text-transform:uppercase}
+.header-hineni{font-size:15px;font-weight:600;color:#9A7C50;letter-spacing:0.04em}
+.divider{width:32px;height:1.5px;background:linear-gradient(to right,#6B1A1A,#9A7C50);border-radius:2px;margin:6px 0 0 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;padding:0 4px}
+.toolbar select{font-size:12px;padding:6px 10px;border:0.5px solid #2A2A2A;border-radius:6px;background:#151515;color:#E8E4D8}
+.toolbar button{font-size:12px;padding:6px 14px;border:0.5px solid #2A2A2A;border-radius:6px;background:#151515;color:#E8E4D8;cursor:pointer;transition:background 0.15s}
+.toolbar button:hover{background:#1E1E1E}
+.toolbar button.primary{background:#6B1A1A;color:#F0ECE0;border-color:#8B2A2A}
+.toolbar button.primary:hover{background:#7d1f1f}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;padding:0 4px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#777}
+.legend-dot{width:12px;height:10px;border-radius:2px;flex-shrink:0}
+.gantt-outer{overflow-x:auto;border:0.5px solid #222;border-radius:8px;background:#0D0D0D}
+table{border-collapse:collapse;width:100%;min-width:900px}
+th,td{border-right:0.5px solid #1E1E1E;border-bottom:0.5px solid #1E1E1E}
+th.h-name{width:210px;min-width:210px;text-align:left;padding:7px 10px;font-size:11px;font-weight:500;color:#666;background:#111;position:sticky;left:0;z-index:4}
+th.h-type{width:66px;min-width:66px;text-align:left;padding:7px 6px;font-size:11px;font-weight:500;color:#666;background:#111;position:sticky;left:210px;z-index:4}
+th.h-month{text-align:center;font-size:12px;font-weight:500;color:#BBAA88;padding:7px 4px;background:#131313;letter-spacing:0.03em}
+th.h-week{text-align:center;font-size:10px;font-weight:400;color:#444;padding:4px 2px;background:#0F0F0F;min-width:54px}
+td.name-cell{padding:5px 10px;font-size:12px;font-weight:400;color:#C8C4B8;position:sticky;left:0;z-index:1;background:#0D0D0D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px;cursor:pointer;transition:background 0.1s}
+td.name-cell:hover{background:#161616}
+td.type-cell{padding:4px 5px;position:sticky;left:210px;z-index:1;background:#0D0D0D}
+td.w-cell{height:36px;padding:2px 3px;position:relative;min-width:54px;background:#0D0D0D}
+td.w-cell.wknd{background:#0A0A0A}
+td.w-cell.hol{background:#100E07}
+.bar{position:absolute;top:6px;bottom:6px;border-radius:3px;cursor:pointer;transition:filter 0.15s}
+.bar:hover{filter:brightness(1.3)}
+.type-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;white-space:nowrap}
+.tt{position:fixed;background:#1A1A1A;border:0.5px solid #333;color:#E8E4D8;font-size:11px;padding:8px 12px;border-radius:5px;pointer-events:none;z-index:9999;max-width:250px;line-height:1.6;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.8)}
+.tt strong{color:#F0ECE0;display:block;font-size:12px;margin-bottom:1px}
+.tt .tt-ch{color:#888;font-size:10px}
+.tt .tt-dt{color:#9A7C50;font-size:10px}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#141414;border:0.5px solid #2A2A2A;border-radius:10px;padding:1.5rem;width:420px;max-width:95vw}
+.modal h3{font-size:15px;font-weight:500;margin-bottom:1rem;color:#E8E4D8}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:11px;color:#666;margin-bottom:4px}
+.form-row input,.form-row select{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid #2A2A2A;border-radius:6px;background:#1A1A1A;color:#E8E4D8}
+.modal-footer{display:flex;gap:8px;justify-content:space-between;margin-top:1.2rem;align-items:center}
+.del-btn{font-size:12px;color:#c0504d;background:none;border:none;cursor:pointer;padding:0}
+.del-btn:hover{text-decoration:underline}
+.modal-actions{display:flex;gap:8px}
+.btn-save{background:#6B1A1A;color:#F0ECE0;border:0.5px solid #8B2A2A;padding:7px 18px;font-size:13px;border-radius:6px;cursor:pointer}
+.btn-save:hover{background:#7d1f1f}
+.btn-cancel{background:transparent;color:#888;border:0.5px solid #2A2A2A;padding:7px 18px;font-size:13px;border-radius:6px;cursor:pointer}
+.btn-cancel:hover{background:#1A1A1A;color:#E8E4D8}
+</style>
+
+<div class="wrap">
+  <div class="header">
+    <div class="header-top">
+      <div class="header-title">
+        <span class="header-label">Planificación de contenido digital</span>
+        <div class="header-main">Gantt de actividades &nbsp;<em>Montesierpe Casa Hacienda</em></div>
+        <div class="header-sub">Abril → Diciembre 2026 &nbsp;·&nbsp; Pauta digital & contenido orgánico</div>
+        <div class="divider"></div>
+      </div>
+      <div class="header-brand">
+        <span class="header-by">Estrategia por</span>
+        <span class="header-hineni">Hineni</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="primary" onclick="openModal()">+ Nueva campaña</button>
+    <select id="filterType" onchange="render()">
+      <option value="">Todos los tipos</option>
+      <option value="ADS">ADS</option>
+      <option value="ORGANICO">Orgánico</option>
+      <option value="PRODUCCION">Producción AV</option>
+      <option value="INICIO">Inicio de actividades</option>
+      <option value="EVENTO">Eventos</option>
+    </select>
+    <select id="viewRange" onchange="render()">
+      <option value="9">Abr → Dic 2026</option>
+      <option value="6">Abr → Sep 2026</option>
+      <option value="3">Abr → Jun 2026</option>
+    </select>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#6B1A1A"></div>ADS</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3d6b2e"></div>Orgánico</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#C4784A"></div>Producción AV</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#185FA5"></div>Inicio de actividades</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9A7C50"></div>Evento / Feriado</div>
+  </div>
+
+  <div class="gantt-outer" id="ganttOuter"></div>
+</div>
+
+<div id="tooltip" class="tt"></div>
+
+<div id="modalBg" class="modal-bg" style="display:none">
+  <div class="modal">
+    <h3 id="modalTitle">Nueva campaña</h3>
+    <div class="form-row"><label>Nombre</label><input type="text" id="fName" placeholder="Ej: REEL N°1: Dónde nos encontramos"></div>
+    <div class="form-row"><label>Tipo</label>
+      <select id="fType">
+        <option value="ADS">ADS (Pauta digital)</option>
+        <option value="ORGANICO">Orgánico (Facebook / TikTok)</option>
+        <option value="PRODUCCION">Producción Audiovisual</option>
+        <option value="INICIO">Inicio de actividades</option>
+        <option value="EVENTO">Evento / Feriado</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Canal / Plataforma</label>
+      <select id="fChannel">
+        <option value="Meta + TikTok">Meta + TikTok</option>
+        <option value="Meta ADS">Meta ADS</option>
+        <option value="Google ADS">Google ADS</option>
+        <option value="TikTok ADS">TikTok ADS</option>
+        <option value="Facebook Orgánico">Facebook Orgánico</option>
+        <option value="TikTok Orgánico">TikTok Orgánico</option>
+        <option value="Producción">Producción</option>
+        <option value="Interno">Interno</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:12px">
+      <div class="form-row" style="flex:1"><label>Fecha inicio</label><input type="date" id="fStart" value="2026-04-01"></div>
+      <div class="form-row" style="flex:1"><label>Fecha fin</label><input type="date" id="fEnd" value="2026-04-30"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="del-btn" id="delBtn" onclick="deleteItem()" style="display:none">Eliminar campaña</button>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-save" onclick="saveItem()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const YEAR = 2026;
+const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+// Feriados Perú 2026
+const HOLIDAYS = {
+  '2026-04-02':'Jueves Santo',
+  '2026-04-03':'Viernes Santo',
+  '2026-05-01':'Día del Trabajo',
+  '2026-05-10':'Día de la Madre',
+  '2026-06-21':'Día del Padre',
+  '2026-06-29':'San Pedro y San Pablo',
+  '2026-07-27':'Fiestas Patrias',
+  '2026-07-28':'Fiestas Patrias',
+  '2026-07-29':'Fiestas Patrias',
+  '2026-08-30':'Santa Rosa de Lima',
+  '2026-10-08':'Combate de Angamos',
+  '2026-11-01':'Todos los Santos',
+  '2026-12-08':'Inmaculada Concepción',
+  '2026-12-25':'Navidad'
+};
+
+const TYPE_COLORS = {ADS:'#6B1A1A',ORGANICO:'#3d6b2e',PRODUCCION:'#C4784A',INICIO:'#185FA5',EVENTO:'#9A7C50'};
+const TYPE_TEXT   = {ADS:'#F0ECE0',ORGANICO:'#e8eddf',PRODUCCION:'#fff',INICIO:'#E6F1FB',EVENTO:'#F0ECE0'};
+const TYPE_LABELS = {ADS:'ADS',ORGANICO:'ORG',PRODUCCION:'PROD',INICIO:'INICIO',EVENTO:'EVT'};
+
+let editId = null;
+let items = [
+  {id:1, name:'Semana Santa',                                          type:'EVENTO',    channel:'Interno',          start:'2026-04-02', end:'2026-04-05'},
+  {id:2, name:'Inicio de Actividades',                                 type:'INICIO',    channel:'Interno',          start:'2026-04-07', end:'2026-04-07'},
+  {id:3, name:'Producción Audiovisual',                                type:'PRODUCCION',channel:'Producción',       start:'2026-04-18', end:'2026-04-18'},
+  {id:4, name:'ADS | REEL N°1: "Dónde nos encontramos"',              type:'ADS',       channel:'Meta + TikTok',    start:'2026-04-24', end:'2026-05-16'},
+  {id:5, name:'Orgánico | REEL N°1: "Dónde nos encontramos"',         type:'ORGANICO',  channel:'Facebook Orgánico',start:'2026-04-24', end:'2026-05-16'},
+  {id:6, name:'FDS Largo | Día del Trabajo',                           type:'EVENTO',    channel:'Interno',          start:'2026-05-01', end:'2026-05-02'},
+  {id:7, name:'ADS | REEL N°2: "¿Quiénes somos?"',                    type:'ADS',       channel:'Meta + TikTok',    start:'2026-05-01', end:'2026-05-23'},
+  {id:8, name:'Día de la Madre',                                       type:'EVENTO',    channel:'Interno',          start:'2026-05-10', end:'2026-05-10'},
+  {id:9, name:'ADS | REEL N°3: "¿Qué puedes hacer en Montesierpe?"', type:'ADS',       channel:'Meta + TikTok',    start:'2026-05-15', end:'2026-05-30'},
+  {id:10,name:'Producción Audiovisual',                                type:'PRODUCCION',channel:'Producción',       start:'2026-05-21', end:'2026-05-21'},
+  {id:11,name:'Día del Padre',                                         type:'EVENTO',    channel:'Interno',          start:'2026-06-21', end:'2026-06-21'},
+  {id:12,name:'FDS Largo | San Pedro y San Pablo',                     type:'EVENTO',    channel:'Interno',          start:'2026-06-27', end:'2026-06-29'},
+];
+let nextId = 13;
+
+function sortItems(){
+  items.sort((a,b)=>{
+    if(a.start !== b.start) return a.start < b.start ? -1 : 1;
+    if(a.end   !== b.end)   return a.end   < b.end   ? -1 : 1;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+function pad(n){return String(n).padStart(2,'0')}
+function dateStr(y,m,d){return `${y}-${pad(m)}-${pad(d)}`}
+function daysInMonth(m,y){return new Date(y,m,0).getDate()}
+function parseDate(s){const[y,mo,d]=s.split('-').map(Number);return new Date(y,mo-1,d)}
+function fmtDate(s){
+  const[y,m,d]=s.split('-');
+  const mn=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${parseInt(d)} ${mn[parseInt(m)-1]} ${y}`;
+}
+
+function buildMonths(n){
+  const r=[];
+  for(let i=0;i<n;i++){
+    const mo=(3+i)%12+1;
+    const yr=YEAR+Math.floor((3+i)/12);
+    const days=daysInMonth(mo,yr);
+    const weeks=[];let wd=[];
+    for(let d=1;d<=days;d++){
+      const ds=dateStr(yr,mo,d);
+      wd.push(ds);
+      const dow=new Date(yr,mo-1,d).getDay();
+      if(dow===0||d===days){weeks.push({days:[...wd]});wd=[];}
+    }
+    r.push({m:mo,y:yr,weeks});
+  }
+  return r;
+}
+
+function overlap(s,e,wDays){
+  const a=parseDate(s),b=parseDate(e);
+  return wDays.some(ds=>{const c=parseDate(ds);return c>=a&&c<=b});
+}
+
+const tooltip=document.getElementById('tooltip');
+function showTip(e,id){
+  const item=items.find(i=>i.id===id); if(!item)return;
+  const color=TYPE_COLORS[item.type];
+  tooltip.innerHTML=`<strong>${item.name}</strong><span class="tt-ch">${item.channel}</span><br><span class="tt-dt">${fmtDate(item.start)} → ${fmtDate(item.end)}</span>`;
+  tooltip.style.borderLeft=`3px solid ${color}`;
+  tooltip.style.display='block';
+  moveTip(e);
+}
+function moveTip(e){
+  const x=e.clientX,y=e.clientY,tw=254,th=72;
+  tooltip.style.left=(x+14+tw>window.innerWidth?x-tw-10:x+14)+'px';
+  tooltip.style.top=(y+th>window.innerHeight?y-th-8:y+8)+'px';
+}
+function hideTip(){tooltip.style.display='none'}
+document.addEventListener('mousemove',e=>{if(tooltip.style.display==='block')moveTip(e)});
+
+function render(){
+  const ft=document.getElementById('filterType')?.value||'';
+  const nm=parseInt(document.getElementById('viewRange')?.value||'9');
+  const months=buildMonths(nm);
+
+  let html='<table><thead><tr><th class="h-name" rowspan="2">Campaña</th><th class="h-type" rowspan="2">Tipo</th>';
+  months.forEach(({m,y,weeks})=>{
+    html+=`<th class="h-month" colspan="${weeks.length}">${MONTH_NAMES[m-1]} ${y}</th>`;
+  });
+  html+='</tr><tr>';
+  months.forEach(({m,y,weeks})=>{
+    weeks.forEach(w=>{
+      const d1=parseInt(w.days[0].split('-')[2]);
+      const d2=parseInt(w.days[w.days.length-1].split('-')[2]);
+      html+=`<th class="h-week">${d1}–${d2}</th>`;
+    });
+  });
+  html+='</tr></thead><tbody>';
+
+  const filtered=ft?items.filter(i=>i.type===ft):items;
+  filtered.forEach(item=>{
+    const color=TYPE_COLORS[item.type]||'#555';
+    const textCol=TYPE_TEXT[item.type]||'#fff';
+    html+=`<tr>
+      <td class="name-cell" onclick="editItem(${item.id})" title="${item.name}">
+        <span style="display:flex;align-items:center;gap:7px">
+          <span style="width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0"></span>
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</span>
+        </span>
+      </td>
+      <td class="type-cell"><span class="type-badge" style="background:${color};color:${textCol}">${TYPE_LABELS[item.type]}</span></td>`;
+
+    months.forEach(({m,y,weeks})=>{
+      weeks.forEach(w=>{
+        const hit=overlap(item.start,item.end,w.days);
+        const hasHol=w.days.some(ds=>HOLIDAYS[ds]);
+        const allWk=w.days.every(ds=>[0,6].includes(new Date(ds).getDay()));
+        const cls=hasHol?'hol':allWk?'wknd':'';
+        if(hit){
+          const st=w.days.includes(item.start);
+          const en=w.days.includes(item.end);
+          const br=st&&en?'3px':st?'3px 0 0 3px':en?'0 3px 3px 0':'0';
+          const lp=st?(w.days.indexOf(item.start)/w.days.length*100)+'%':'0%';
+          const rp=en?((w.days.length-1-w.days.indexOf(item.end))/w.days.length*100)+'%':'0%';
+          html+=`<td class="w-cell ${cls}">
+            <div class="bar" style="background:${color};border-radius:${br};left:calc(${lp} + 2px);right:calc(${rp} + 2px)"
+              onmouseenter="showTip(event,${item.id})" onmouseleave="hideTip()" onclick="editItem(${item.id})">
+            </div></td>`;
+        } else {
+          html+=`<td class="w-cell ${cls}"></td>`;
+        }
+      });
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('ganttOuter').innerHTML=html;
+}
+
+function openModal(item){
+  editId=item?item.id:null;
+  document.getElementById('modalTitle').textContent=item?'Editar campaña':'Nueva campaña';
+  document.getElementById('fName').value=item?item.name:'';
+  document.getElementById('fType').value=item?item.type:'ADS';
+  document.getElementById('fChannel').value=item?item.channel:'Meta + TikTok';
+  document.getElementById('fStart').value=item?item.start:'2026-04-01';
+  document.getElementById('fEnd').value=item?item.end:'2026-04-30';
+  document.getElementById('delBtn').style.display=item?'block':'none';
+  document.getElementById('modalBg').style.display='flex';
+}
+function closeModal(){document.getElementById('modalBg').style.display='none';editId=null}
+function editItem(id){const item=items.find(i=>i.id===id);if(item)openModal(item)}
+function deleteItem(){
+  if(editId&&confirm('¿Eliminar esta campaña?')){
+    items=items.filter(i=>i.id!==editId);
+    sortItems(); closeModal(); render();
+  }
+}
+function saveItem(){
+  const name=document.getElementById('fName').value.trim();
+  const type=document.getElementById('fType').value;
+  const channel=document.getElementById('fChannel').value;
+  const start=document.getElementById('fStart').value;
+  const end=document.getElementById('fEnd').value;
+  if(!name||!start||!end){alert('Completa todos los campos');return}
+  if(start>end){alert('La fecha inicio no puede ser posterior a la fecha fin');return}
+  if(editId){
+    const idx=items.findIndex(i=>i.id===editId);
+    if(idx>=0)items[idx]={...items[idx],name,type,channel,start,end};
+  } else {
+    items.push({id:nextId++,name,type,channel,start,end});
+  }
+  sortItems(); closeModal(); render();
+}
+document.getElementById('modalBg').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modalBg'))closeModal();
+});
+
+sortItems();
+render();
+</script>
